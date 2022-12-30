@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pay/pay.dart';
 import 'package:tesis/widgets/list_cards.dart';
 import 'package:tesis/widgets/shop_cards.dart';
 
@@ -53,7 +54,15 @@ class ShopListPage extends StatelessWidget {
               for (int i = 0; i < ds.length; i++) {
                 sum += (ds[i]['total']).toDouble();
               }
-              return Text('Monto total a Pagar: $sum');
+              return Column(
+                children: [
+                  Text('Monto total a Pagar: $sum'),
+                  GooglePayButton(
+                      paymentConfigurationAsset: paymentConfigurationAsset,
+                      onPaymentResult: onGooglePayResult,
+                      paymentItems: paymentItems)
+                ],
+              );
             },
           ),
         ],
