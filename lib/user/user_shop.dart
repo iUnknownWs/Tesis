@@ -10,14 +10,14 @@ Stream<List<Products>> readProducts() => FirebaseFirestore.instance
     .map((snapshot) =>
         snapshot.docs.map((doc) => Products.fromJson(doc.data())).toList());
 
-class ShopPage extends StatefulWidget {
-  const ShopPage({super.key});
+class UserShopPage extends StatefulWidget {
+  const UserShopPage({super.key});
 
   @override
-  State<ShopPage> createState() => _ShopPageState();
+  State<UserShopPage> createState() => _UserShopPageState();
 }
 
-class _ShopPageState extends State<ShopPage> {
+class _UserShopPageState extends State<UserShopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,22 +37,6 @@ class _ShopPageState extends State<ShopPage> {
               return const Center(child: CircularProgressIndicator());
             }
           }),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'btn1',
-        mini: true,
-        child: const Icon(
-          Icons.add,
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const ProductDialog(),
-              fullscreenDialog: true,
-            ),
-          );
-        },
-      ),
     );
   }
 }

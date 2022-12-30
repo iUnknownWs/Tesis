@@ -4,21 +4,21 @@ import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:tesis/pages/qrscan.dart';
 import 'package:tesis/provider/google_sign_in.dart';
+import 'package:tesis/user/user_shop.dart';
 import 'package:tesis/widgets/info_dialog.dart';
 // import 'package:tesis/widgets/qrscan.dart';
-import 'package:tesis/pages/shop.dart';
 import 'package:tesis/pages/shop_list.dart';
 import 'package:tesis/widgets/dialog.dart';
 
-class Home extends StatefulWidget {
+class UserHome extends StatefulWidget {
   final QRViewController? controller;
-  const Home({Key? key, this.controller}) : super(key: key);
+  const UserHome({Key? key, this.controller}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<UserHome> createState() => _UserHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _UserHomeState extends State<UserHome> {
   var currentPageIndex = 0;
   final pageController = PageController();
 
@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
         title: const Text('Asistente'),
         centerTitle: true,
         actions: [
-          PopupMenuButton( 
+          PopupMenuButton(
               position: PopupMenuPosition.under,
               // color: ElevationOverlay.applySurfaceTint(
               //     Theme.of(context).colorScheme.surface,
@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
           });
         },
         children: <Widget>[
-          const ShopPage(),
+          const UserShopPage(),
           QRScanner(showTab2: (int index) {
             setState(() {
               setState(() {
@@ -166,7 +166,7 @@ class _HomeState extends State<Home> {
           NavigationDestination(
             icon: Icon(Icons.store_outlined),
             selectedIcon: Icon(Icons.store),
-            label: 'Tienda',
+            label: 'Shop',
           ),
           NavigationDestination(
             icon: Icon(Icons.qr_code_scanner_outlined),

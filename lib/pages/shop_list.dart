@@ -5,7 +5,7 @@ import 'package:tesis/widgets/list_cards.dart';
 import 'package:tesis/widgets/shop_cards.dart';
 
 class ShopListPage extends StatelessWidget {
-  const ShopListPage({super.key});
+  ShopListPage({super.key});
 
   Stream<List<ShopList>> readProducts() => FirebaseFirestore.instance
       .collection('shoplist')
@@ -13,6 +13,14 @@ class ShopListPage extends StatelessWidget {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => ShopList.fromJson(doc.data())).toList());
+
+  final paymentItems = [
+    const PaymentItem(
+      label: 'Total',
+      amount: '99.99',
+      status: PaymentItemStatus.final_price,
+    )
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +66,19 @@ class ShopListPage extends StatelessWidget {
                 children: [
                   Text('Monto total a Pagar: $sum'),
                   GooglePayButton(
-                      paymentConfigurationAsset: paymentConfigurationAsset,
-                      onPaymentResult: onGooglePayResult,
-                      paymentItems: paymentItems)
+                    paymentConfigurationAsset: 'gpay.json',
+                    paymentItems: paymentItems,
+                    type: GooglePayButtonType.pay,
+                    margin: const EdgeInsets.only(top: 15.0),
+                    onPaymentResult: print,
+                    // ignore: avoid_print
+                    onError: (error) => print(error),
+                    childOnError: const Text('Error'),
+                    loadingIndicator: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsetsDirectional.only(bottom: 8))
                 ],
               );
             },
