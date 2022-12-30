@@ -27,7 +27,7 @@ class Start extends StatelessWidget {
               if (snapshot.hasData) {
                 final userDoc = snapshot.data;
                 final user = userDoc!.data();
-                if ((user as Map<String, dynamic>)['role'] == 'admin') {
+                if ((user as Map<String, dynamic>)['role'] == 'Admin') {
                   return const Home();
                 } else {
                   return const UserHome();

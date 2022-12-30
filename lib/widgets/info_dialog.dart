@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,10 @@ Future infoDialog(BuildContext context) => showDialog(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
+                        'ID del Usuario: ${user.uid}',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      Text(
                         'Nombre: ${user.displayName!}',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
@@ -40,14 +45,26 @@ Future infoDialog(BuildContext context) => showDialog(
                         'Email: ${user.email!}',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
+                      StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(user.uid)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              final userDoc = snapshot.data!.data();
+                              return Text(
+                                'Rol: ${(userDoc as Map<String, dynamic>)['role']}',
+                                style: Theme.of(context).textTheme.labelLarge,
+                              );
+                            } else {
+                              return const Text('Rol: Error');
+                            }
+                          }),
                       Text(
                         'Foto:',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
-                      // Text(
-                      //   'Numero Telefonico: ${user.phoneNumber}',
-                      //   style: Theme.of(context).textTheme.labelLarge,
-                      // ),
                     ],
                   ),
                 ),

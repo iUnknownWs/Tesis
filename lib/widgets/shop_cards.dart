@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesis/pages/add_product.dart';
+import 'package:tesis/widgets/info_dialog.dart';
 
 class BuildShopCards extends StatefulWidget {
   final Products products;
@@ -28,6 +29,8 @@ class _BuildShopCardsState extends State<BuildShopCards> {
     required double total,
   }) async {
     final docShopList = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
         .collection('shoplist')
         .doc(widget.products.id);
     final shopList = ShopList(

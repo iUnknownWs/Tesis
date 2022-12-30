@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
 import 'package:tesis/widgets/list_cards.dart';
@@ -6,8 +7,11 @@ import 'package:tesis/widgets/shop_cards.dart';
 
 class ShopListPage extends StatelessWidget {
   ShopListPage({super.key});
+  final user = FirebaseAuth.instance.currentUser!;
 
   Stream<List<ShopList>> readProducts() => FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.uid)
       .collection('shoplist')
       .orderBy('price')
       .snapshots()

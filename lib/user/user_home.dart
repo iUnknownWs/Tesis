@@ -6,7 +6,6 @@ import 'package:tesis/pages/qrscan.dart';
 import 'package:tesis/provider/google_sign_in.dart';
 import 'package:tesis/user/user_shop.dart';
 import 'package:tesis/widgets/info_dialog.dart';
-// import 'package:tesis/widgets/qrscan.dart';
 import 'package:tesis/pages/shop_list.dart';
 import 'package:tesis/widgets/dialog.dart';
 
@@ -65,7 +64,6 @@ class _UserHomeState extends State<UserHome> {
               icon: CircleAvatar(
                 backgroundImage: NetworkImage(user.photoURL!),
               ),
-              // icon: const Icon(Icons.account_circle_outlined),
               itemBuilder: (BuildContext context) => [
                     PopupMenuItem(
                       child: ListTile(

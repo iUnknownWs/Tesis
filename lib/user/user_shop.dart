@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tesis/pages/add_product.dart';
 import 'package:tesis/widgets/shop_cards.dart';
 
+
 Stream<List<Products>> readProducts() => FirebaseFirestore.instance
     .collection('products')
     .orderBy('name')
