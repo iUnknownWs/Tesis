@@ -85,17 +85,17 @@ class _BuildShopCardsState extends State<BuildShopCards> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              padding: const EdgeInsets.only(left: 8),
               child: Text('Precio: ${widget.products.price}\$'),
             ),
             Container(
-              margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              margin: const EdgeInsets.only(left: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Cantidad: '),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    padding: const EdgeInsets.only(left: 8),
                     child: QuantityMenu(
                       quantityFuction: quantityFunction,
                     ),

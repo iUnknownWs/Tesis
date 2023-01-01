@@ -17,6 +17,8 @@ class _ProductDialogState extends State<ProductDialog> {
   UploadTask? uploadTask;
   final controllerName = TextEditingController();
   final controllerPrice = TextEditingController();
+  final controllerCategory = TextEditingController();
+  CategoryLabel? selectedCategory;
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles();
@@ -27,7 +29,10 @@ class _ProductDialogState extends State<ProductDialog> {
     });
   }
 
-  Future createProduct({required String name, required double price}) async {
+  Future createProduct(
+      {required String name,
+      required String category,
+      required double price}) async {
     final path = 'files/${pickedFile!.name}';
     final file = File(pickedFile!.path!);
     final ref = FirebaseStorage.instance.ref().child(path);
@@ -49,6 +54,7 @@ class _ProductDialogState extends State<ProductDialog> {
       id: docProducts.id,
       name: name,
       price: price,
+      category: category,
       imageUrl: imageUrl,
     );
     final json = products.toJson();
@@ -107,6 +113,13 @@ class _ProductDialogState extends State<ProductDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final List<DropdownMenuEntry<CategoryLabel>> categoryEntries =
+        <DropdownMenuEntry<CategoryLabel>>[];
+    for (final CategoryLabel category in CategoryLabel.values) {
+      categoryEntries.add(DropdownMenuEntry<CategoryLabel>(
+          value: category, label: category.label));
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -118,7 +131,8 @@ class _ProductDialogState extends State<ProductDialog> {
                 onPressed: () {
                   final name = controllerName.text;
                   final price = double.parse(controllerPrice.text);
-                  createProduct(name: name, price: price)
+                  final category = controllerCategory.text;
+                  createProduct(name: name, price: price, category: category)
                       .then((value) => Navigator.pop(context));
                 },
                 child: const Text("Añadir"))
@@ -142,7 +156,7 @@ class _ProductDialogState extends State<ProductDialog> {
                 child: TextFormField(
                   controller: controllerName,
                   decoration: const InputDecoration(
-                    hintText: 'Nombre',
+                    hintText: 'Inserte el Nombre',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(
                       Icons.badge,
@@ -163,7 +177,7 @@ class _ProductDialogState extends State<ProductDialog> {
                   keyboardType: TextInputType.number,
                   controller: controllerPrice,
                   decoration: const InputDecoration(
-                    hintText: 'Precio',
+                    hintText: 'Insterte el precio',
                     suffixText: '\$',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(
@@ -172,6 +186,24 @@ class _ProductDialogState extends State<ProductDialog> {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Categoria',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: DropdownMenu(
+                    controller: controllerCategory,
+                    dropdownMenuEntries: categoryEntries,
+                    onSelected: (CategoryLabel? category) {
+                      setState(() {
+                        selectedCategory = category;
+                      });
+                    },
+                  )),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
@@ -211,12 +243,14 @@ class Products {
   String id;
   final String name;
   final double price;
+  final String category;
   final String imageUrl;
 
   Products({
     this.id = '',
     required this.name,
     required this.price,
+    required this.category,
     required this.imageUrl,
   });
 
@@ -224,6 +258,7 @@ class Products {
         'id': id,
         'name': name,
         'price': price,
+        'category': category,
         'imageUrl': imageUrl,
       };
 
@@ -232,7 +267,18 @@ class Products {
       id: json['id'],
       name: json['name'],
       price: json['price'],
+      category: json['category'],
       imageUrl: json['imageUrl'],
     );
   }
+}
+
+enum CategoryLabel {
+  accesorios('Accesorios'),
+  calzado('Calzado'),
+  selfcare('Cuidado Personal'),
+  electrodomestico('Electrodoméstico');
+
+  const CategoryLabel(this.label);
+  final String label;
 }
