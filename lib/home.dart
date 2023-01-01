@@ -5,10 +5,11 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:tesis/pages/qrscan.dart';
 import 'package:tesis/provider/google_sign_in.dart';
 import 'package:tesis/widgets/info_dialog.dart';
-// import 'package:tesis/widgets/qrscan.dart';
 import 'package:tesis/pages/shop.dart';
 import 'package:tesis/pages/shop_list.dart';
 import 'package:tesis/widgets/dialog.dart';
+
+enum Item { itemOne, itemTwo, itemThree }
 
 class Home extends StatefulWidget {
   final QRViewController? controller;
@@ -37,6 +38,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Item? selectedMenu;
     final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -47,90 +49,68 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Asistente'),
         centerTitle: true,
-        actions: [
-          PopupMenuButton( 
-              position: PopupMenuPosition.under,
-              // color: ElevationOverlay.applySurfaceTint(
-              //     Theme.of(context).colorScheme.surface,
-              //     Theme.of(context).colorScheme.surfaceTint,
-              //     2),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4)),
-              constraints: const BoxConstraints(
-                minWidth: 112,
-                maxWidth: 280,
+        actions: <Widget>[
+          PopupMenuButton<Item>(
+            position: PopupMenuPosition.under,
+            initialValue: selectedMenu,
+            onSelected: (Item item) {
+              setState(() {
+                selectedMenu = item;
+                if (selectedMenu == Item.itemOne) {
+                  infoDialog(context);
+                } else if (selectedMenu == Item.itemTwo) {
+                  openDialog(context);
+                } else if (selectedMenu == Item.itemThree) {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  provider.logout();
+                }
+              });
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem<Item>(
+                value: Item.itemOne,
+                child: Row(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Icon(Icons.account_circle),
+                    ),
+                    Text(
+                      'Información',
+                    ),
+                  ],
+                ),
               ),
-              iconSize: 30,
-              icon: CircleAvatar(
-                backgroundImage: NetworkImage(user.photoURL!),
+              PopupMenuItem<Item>(
+                value: Item.itemTwo,
+                child: Row(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Icon(Icons.settings),
+                    ),
+                    Text('Configuración'),
+                  ],
+                ),
               ),
-              // icon: const Icon(Icons.account_circle_outlined),
-              itemBuilder: (BuildContext context) => [
-                    PopupMenuItem(
-                      child: ListTile(
-                        iconColor:
-                            Theme.of(context).colorScheme.onSurfaceVariant,
-                        leading: const Icon(Icons.settings),
-                        onTap: (() {
-                          Navigator.pop(context);
-                          openDialog(context);
-                        }),
-                        title: Text(
-                          'Configuración',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge
-                              ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface),
-                        ),
-                      ),
+              PopupMenuItem<Item>(
+                value: Item.itemThree,
+                child: Row(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Icon(Icons.logout_outlined),
                     ),
-                    PopupMenuItem(
-                      child: ListTile(
-                        iconColor:
-                            Theme.of(context).colorScheme.onSurfaceVariant,
-                        leading: const Icon(Icons.account_circle),
-                        onTap: (() {
-                          Navigator.pop(context);
-                          infoDialog(context);
-                        }),
-                        title: Text(
-                          'Información',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge
-                              ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface),
-                        ),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      child: ListTile(
-                        iconColor:
-                            Theme.of(context).colorScheme.onSurfaceVariant,
-                        leading: const Icon(Icons.logout_outlined),
-                        onTap: (() {
-                          final provider = Provider.of<GoogleSignInProvider>(
-                              context,
-                              listen: false);
-                          provider.logout();
-                          Navigator.pop(context);
-                        }),
-                        title: Text(
-                          'Cerrar Sesión',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge
-                              ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface),
-                        ),
-                      ),
-                    ),
-                  ])
+                    Text('Cerrar Sesión'),
+                  ],
+                ),
+              ),
+            ],
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(user.photoURL!),
+            ),
+          )
         ],
       ),
       body: PageView(

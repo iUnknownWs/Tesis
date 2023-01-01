@@ -26,7 +26,10 @@ class BuildListCards extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(shopList.name),
+                  Text(
+                    shopList.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                   Text('Precio: ${shopList.price}\$'),
                   Text('Cantidad: ${shopList.quantity}')
                 ],
@@ -45,32 +48,32 @@ class BuildListCards extends StatelessWidget {
                   ),
                 ),
                 onPressed: () => showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: Text(
-                          '¿Desea eliminar el producto ${shopList.name} de la base de datos?',
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Cancelar')),
-                          TextButton(
-                              onPressed: () {
-                                final docShopList = FirebaseFirestore.instance
-                                    .collection('shoplist')
-                                    .doc(shopList.id);
-
-                                docShopList.delete();
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Eliminar')),
-                        ],
-                      ),
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text(
+                      '¿Desea eliminar el producto ${shopList.name} de la base de datos?',
+                      textAlign: TextAlign.center,
                     ),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancelar')),
+                      TextButton(
+                          onPressed: () {
+                            final docShopList = FirebaseFirestore.instance
+                                .collection('shoplist')
+                                .doc(shopList.id);
+
+                            docShopList.delete();
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Eliminar')),
+                    ],
+                  ),
+                ),
                 child: const Text(
                   'Eliminar',
                 ),

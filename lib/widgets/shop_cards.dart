@@ -77,19 +77,25 @@ class _BuildShopCardsState extends State<BuildShopCards> {
               image: NetworkImage(widget.products.imageUrl),
               fit: BoxFit.cover,
             ),
-            ListTile(
-              title: Text(widget.products.name),
-              subtitle: Text('Precio: ${widget.products.price}\$'),
-              visualDensity: VisualDensity.compact,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
+              child: Text(
+                widget.products.name,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              child: Text('Precio: ${widget.products.price}\$'),
             ),
             Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+              margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Cantidad: '),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                     child: QuantityMenu(
                       quantityFuction: quantityFunction,
                     ),
