@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -73,9 +74,11 @@ class _BuildShopCardsState extends State<BuildShopCards> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image(
-              image: NetworkImage(widget.products.imageUrl),
-              fit: BoxFit.cover,
+            CachedNetworkImage(
+              imageUrl: widget.products.imageUrl,
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),

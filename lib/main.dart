@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'package:tesis/home.dart';
 import 'package:tesis/provider/google_sign_in.dart';
 import 'package:tesis/start.dart';
 import 'package:tesis/theme/color_schemes.g.dart';
@@ -27,7 +25,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -45,11 +42,7 @@ class _MyAppState extends State<MyApp> {
             colorScheme: darkColorScheme,
           ),
           themeMode: provider.themeMode,
-          initialRoute: '/',
-          routes: {
-            '/': (context) => const Start(),
-            '/second': (context) => const Home(),
-          },
+          home: const Start(),
         );
       }),
     );

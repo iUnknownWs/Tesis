@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
         elevation: 4,
         surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        title: const Text('Asistente'),
+        title: const Text('Swift Shop'),
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton<Item>(

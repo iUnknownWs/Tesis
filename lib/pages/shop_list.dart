@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesis/widgets/list_cards.dart';
 import 'package:tesis/widgets/shop_cards.dart';
 
@@ -21,15 +22,18 @@ class ShopListPage extends StatelessWidget {
   final paymentItems = [
     const PaymentItem(
       label: 'Total',
-      amount: '99.99',
+      amount: '99.9',
       status: PaymentItemStatus.final_price,
     )
   ];
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> shoplistStream =
-        FirebaseFirestore.instance.collection('shoplist').snapshots();
+    final Stream<QuerySnapshot> shoplistStream = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('shoplist')
+        .snapshots();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
@@ -68,7 +72,10 @@ class ShopListPage extends StatelessWidget {
               }
               return Column(
                 children: [
-                  Text('Monto total a Pagar: $sum'),
+                  Text(
+                    'Monto total a Pagar: $sum\$',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                   GooglePayButton(
                     paymentConfigurationAsset: 'gpay.json',
                     paymentItems: paymentItems,
@@ -82,18 +89,51 @@ class ShopListPage extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     ),
                   ),
-                  const Padding(padding: EdgeInsetsDirectional.only(bottom: 8))
+                  const Padding(padding: EdgeInsetsDirectional.only(bottom: 8)),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFFFFFFFF),
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF6750A4),
+                      ),
+                    ),
+                    onPressed: () => showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: SizedBox(
+                          width: 240,
+                          height: 260,
+                          child: QrImage(
+                            data: sum.toString(),
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        content: SizedBox(
+                            height: 18,
+                            child: Center(
+                                child: Text('Precio total a pagar: $sum\$'))),
+                        actions: <Widget>[
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cerrar')),
+                        ],
+                      ),
+                    ),
+                    child: const Text(
+                      'Mostrar QR',
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsetsDirectional.only(bottom: 8)),
                 ],
               );
             },
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(
-          Icons.paid,
-        ),
-        onPressed: () {},
       ),
     );
   }

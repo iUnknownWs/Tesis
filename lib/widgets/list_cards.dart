@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tesis/widgets/shop_cards.dart';
@@ -16,9 +17,11 @@ class BuildListCards extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Image(
-              image: NetworkImage(shopList.imageUrl),
-              fit: BoxFit.cover,
+            CachedNetworkImage(
+              imageUrl: shopList.imageUrl,
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             Padding(
               padding: const EdgeInsets.all(8),

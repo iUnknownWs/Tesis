@@ -5,7 +5,7 @@ import 'package:tesis/home.dart';
 import 'package:tesis/provider/google_sign_in.dart';
 import 'package:tesis/user/user_home.dart';
 
-import 'login.dart';
+import 'pages/login.dart';
 
 class Start extends StatelessWidget {
   const Start({super.key});

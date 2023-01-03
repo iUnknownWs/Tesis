@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:tesis/pages/add_product.dart';
+import 'package:tesis/widgets/info_dialog.dart';
 import 'package:tesis/widgets/shop_cards.dart';
 
 class BuildQRCards extends StatefulWidget {
@@ -30,6 +32,8 @@ class _BuildQRCardsState extends State<BuildQRCards> {
     required String quantity,
   }) async {
     final docShopList = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
         .collection('shoplist')
         .doc(widget.products.id);
     final shopList = ShopList(
@@ -60,21 +64,29 @@ class _BuildQRCardsState extends State<BuildQRCards> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image(image: NetworkImage(widget.products.imageUrl)),
-            ListTile(
-              title: Text(widget.products.name),
-              subtitle: Text('Precio: ${widget.products.price}\$'),
-              visualDensity: VisualDensity.compact,
+            CachedNetworkImage(
+              imageUrl: widget.products.imageUrl,
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
+              child: Text(
+                widget.products.name,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text('Precio: ${widget.products.price}\$'),
             ),
             Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+              margin: const EdgeInsets.only(left: 8),
               child: Column(
                 children: [
                   const Text('Cantidad: '),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                    child: QuantityMenu(quantityFuction: quantityFunction),
-                  ),
+                  QuantityMenu(quantityFuction: quantityFunction),
                 ],
               ),
             ),
