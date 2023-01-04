@@ -98,9 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Color(0xFF6750A4),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/second');
-                    },
+                    onPressed: () {},
                     child: const Text(
                       'Iniciar Sesión',
                     ),
@@ -108,7 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Padding(
                     padding: EdgeInsets.all(4.0),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       // mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(

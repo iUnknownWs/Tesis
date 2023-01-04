@@ -22,7 +22,7 @@ class ShopListPage extends StatelessWidget {
   final paymentItems = [
     const PaymentItem(
       label: 'Total',
-      amount: '99.9',
+      amount: '99.99',
       status: PaymentItemStatus.final_price,
     )
   ];
@@ -34,6 +34,28 @@ class ShopListPage extends StatelessWidget {
         .doc(user.uid)
         .collection('shoplist')
         .snapshots();
+
+    void onGooglePayResult(paymentResult) {
+      final dbUserDoc =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
+      debugPrint(paymentResult.toString());
+      const SnackBar snackBar = SnackBar(
+        content: Text('El pago se ha realizado con exito'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      dbUserDoc.collection('shoplist').get().then((querySnapshot) => {
+            // ignore: avoid_function_literals_in_foreach_calls
+            querySnapshot.docs.forEach((result) {
+              dbUserDoc
+                  .collection('history')
+                  .doc()
+                  .set(result.data())
+                  .then((value) => result.reference.delete());
+            })
+          });
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
@@ -81,7 +103,7 @@ class ShopListPage extends StatelessWidget {
                     paymentItems: paymentItems,
                     type: GooglePayButtonType.pay,
                     margin: const EdgeInsets.only(top: 15.0),
-                    onPaymentResult: print,
+                    onPaymentResult: onGooglePayResult,
                     // ignore: avoid_print
                     onError: (error) => print(error),
                     childOnError: const Text('Error'),
@@ -125,7 +147,7 @@ class ShopListPage extends StatelessWidget {
                       ),
                     ),
                     child: const Text(
-                      'Mostrar QR',
+                      'Mostrar el QR',
                     ),
                   ),
                   const Padding(padding: EdgeInsetsDirectional.only(bottom: 8)),
