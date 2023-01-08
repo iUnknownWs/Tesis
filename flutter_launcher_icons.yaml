@@ -1,0 +1,20 @@
+dev_dependencies:
+  flutter_launcher_icons: "^0.11.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon2.png"
+  adaptive_icon_background: "assets/icon/background.png"
+  web:
+    generate: true
+    image_path: "assets/icon/icon2.png"
+    background_color: "#000000"
+    theme_color: "#000000"
+  windows:
+    generate: true
+    image_path: "assets/icon/icon2.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icon/icon2.png"

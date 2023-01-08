@@ -8,6 +8,8 @@ class RegisterDialog extends StatefulWidget {
 }
 
 class _RegisterDialogState extends State<RegisterDialog> {
+  bool _visibility = true;
+  bool visibility = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +99,50 @@ class _RegisterDialogState extends State<RegisterDialog> {
                     prefixIcon: Icon(
                       Icons.email,
                     ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  obscureText: _visibility,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.lock),
+                    labelText: 'Introduzca su contraseña',
+                    suffixIcon: IconButton(
+                        icon: Icon(
+                          _visibility ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(
+                            () {
+                              _visibility = !_visibility;
+                            },
+                          );
+                        }),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  obscureText: visibility,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.lock),
+                    labelText: 'Confirme su contraseña',
+                    suffixIcon: IconButton(
+                        icon: Icon(
+                          visibility ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(
+                            () {
+                              visibility = !visibility;
+                            },
+                          );
+                        }),
                   ),
                 ),
               ),

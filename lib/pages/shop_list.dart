@@ -92,67 +92,77 @@ class ShopListPage extends StatelessWidget {
               for (int i = 0; i < ds.length; i++) {
                 sum += (ds[i]['total']).toDouble();
               }
-              return Column(
-                children: [
-                  Text(
-                    'Monto total a Pagar: $sum\$',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  GooglePayButton(
-                    paymentConfigurationAsset: 'gpay.json',
-                    paymentItems: paymentItems,
-                    type: GooglePayButtonType.pay,
-                    margin: const EdgeInsets.only(top: 15.0),
-                    onPaymentResult: onGooglePayResult,
-                    // ignore: avoid_print
-                    onError: (error) => print(error),
-                    childOnError: const Text('Error'),
-                    loadingIndicator: const Center(
-                      child: CircularProgressIndicator(),
+              if (sum != 0) {
+                return Column(
+                  children: [
+                    Text(
+                      'Monto total a Pagar: $sum\$',
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
-                  ),
-                  const Padding(padding: EdgeInsetsDirectional.only(bottom: 8)),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFFFFFFFF),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF6750A4),
+                    GooglePayButton(
+                      paymentConfigurationAsset: 'gpay.json',
+                      paymentItems: paymentItems,
+                      type: GooglePayButtonType.pay,
+                      margin: const EdgeInsets.only(top: 15.0),
+                      onPaymentResult: onGooglePayResult,
+                      // ignore: avoid_print
+                      onError: (error) => print(error),
+                      childOnError: const Text('Error'),
+                      loadingIndicator: const Center(
+                        child: CircularProgressIndicator(),
                       ),
                     ),
-                    onPressed: () => showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: SizedBox(
-                          width: 240,
-                          height: 260,
-                          child: QrImage(
-                            data: sum.toString(),
-                            backgroundColor: Colors.white,
-                          ),
+                    const Padding(
+                        padding: EdgeInsetsDirectional.only(bottom: 8)),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFFFFFFFF),
                         ),
-                        content: SizedBox(
-                            height: 18,
-                            child: Center(
-                                child: Text('Precio total a pagar: $sum\$'))),
-                        actions: <Widget>[
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Cerrar')),
-                        ],
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFF6750A4),
+                        ),
+                      ),
+                      onPressed: () => showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: SizedBox(
+                            width: 240,
+                            height: 260,
+                            child: QrImage(
+                              data: sum.toString(),
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                          content: SizedBox(
+                              height: 18,
+                              child: Center(
+                                  child: Text('Precio total a pagar: $sum\$'))),
+                          actions: <Widget>[
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cerrar')),
+                          ],
+                        ),
+                      ),
+                      child: const Text(
+                        'Mostrar el QR',
                       ),
                     ),
-                    child: const Text(
-                      'Mostrar el QR',
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsetsDirectional.only(bottom: 8)),
-                ],
-              );
+                    const Padding(
+                        padding: EdgeInsetsDirectional.only(bottom: 8)),
+                  ],
+                );
+              } else {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child:
+                      Center(child: Text('No ha añadido ningún producto aún')),
+                );
+              }
             },
           ),
         ],
