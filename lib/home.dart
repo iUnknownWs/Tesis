@@ -151,7 +151,7 @@ class _HomeState extends State<Home> {
           NavigationDestination(
             icon: Icon(Icons.qr_code_scanner_outlined),
             selectedIcon: Icon(Icons.qr_code_scanner),
-            label: 'Escaner',
+            label: 'Escáner',
           ),
           NavigationDestination(
             icon: Icon(Icons.shopping_cart_outlined),
