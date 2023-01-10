@@ -104,12 +104,19 @@ class _RegisterDialogState extends State<RegisterDialog> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Contraseña',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
                   obscureText: _visibility,
                   decoration: InputDecoration(
+                    hintText: 'Introduzca su contraseña',
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock),
-                    labelText: 'Introduzca su contraseña',
                     suffixIcon: IconButton(
                         icon: Icon(
                           _visibility ? Icons.visibility : Icons.visibility_off,
@@ -126,12 +133,19 @@ class _RegisterDialogState extends State<RegisterDialog> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Confirmar contraseña',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
                   obscureText: visibility,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
+                    hintText: 'Confirmar contraseña',
                     prefixIcon: const Icon(Icons.lock),
-                    labelText: 'Confirme su contraseña',
                     suffixIcon: IconButton(
                         icon: Icon(
                           visibility ? Icons.visibility : Icons.visibility_off,
