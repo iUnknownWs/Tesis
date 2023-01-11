@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>415114091424-3ldlnl2lsliv1k71j9r4bjo04lcgkdmd.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.415114091424-3ldlnl2lsliv1k71j9r4bjo04lcgkdmd</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>415114091424-iuqh1cnfvbada4d2cbt1hrft1v6nhb6a.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCbEWd7zD1kUH5Er_yZhqP2iX1Dhm7Ele0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>415114091424</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.tesis</string>
+	<key>PROJECT_ID</key>
+	<string>tesis-flutter-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tesis-flutter-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:415114091424:ios:a07204dc96814f9d1062c5</string>
+</dict>
+</plist>

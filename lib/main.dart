@@ -5,10 +5,13 @@ import 'package:tesis/provider/google_sign_in.dart';
 import 'package:tesis/start.dart';
 import 'package:tesis/theme/color_schemes.g.dart';
 import 'package:tesis/theme/theme_provider.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     ChangeNotifierProvider<ThemeProvider>(
       child: const MyApp(),
