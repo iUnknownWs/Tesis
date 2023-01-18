@@ -107,7 +107,6 @@ class ShopListPage extends StatelessWidget {
                       onPaymentResult: onGooglePayResult,
                       // ignore: avoid_print
                       onError: (error) => print(error),
-                      childOnError: const Text('Error'),
                       loadingIndicator: const Center(
                         child: CircularProgressIndicator(),
                       ),

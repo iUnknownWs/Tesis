@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tesis/pages/add_product.dart';
-import 'package:tesis/widgets/shop_cards.dart';
+import '../widgets/user_cards.dart';
 
 Stream<List<Products>> readProducts(String categorytext) {
   final String category = categorytext;
@@ -97,7 +97,7 @@ class _UserShopPageState extends State<UserShopPage> {
                   Expanded(
                     child: ListView(
                         children: products
-                            .map((p) => BuildShopCards(products: p))
+                            .map((p) => UserBuildShopCards(products: p))
                             .toList()),
                   ),
                 ],
