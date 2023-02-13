@@ -40,6 +40,7 @@ class _BuildQRCardsState extends State<BuildQRCards> {
         total: total,
         id: docShopList.id,
         name: name,
+        uname: user.displayName!,
         price: price,
         imageUrl: imgUrl,
         quantity: quantity);
@@ -79,13 +80,27 @@ class _BuildQRCardsState extends State<BuildQRCards> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Text('Precio: ${widget.products.price}\$'),
+              child: RichText(
+                text: TextSpan(
+                    text: 'Precio: ',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    children: [
+                      TextSpan(
+                          text: widget.products.price.toString(),
+                          style:
+                              const TextStyle(fontWeight: FontWeight.normal)),
+                    ]),
+              ),
+              // child: Text('Precio: ${widget.products.price}\$'),
             ),
             Container(
               margin: const EdgeInsets.only(left: 8),
               child: Column(
                 children: [
-                  const Text('Cantidad: '),
+                  const Text(
+                    'Cantidad: ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   QuantityMenu(quantityFuction: quantityFunction),
                 ],
               ),

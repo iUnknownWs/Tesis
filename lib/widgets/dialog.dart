@@ -41,7 +41,7 @@ Future openDialog(BuildContext context) => showDialog(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'Tema',
+                        'Tema: ',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       Consumer<ThemeProvider>(

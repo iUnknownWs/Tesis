@@ -34,7 +34,8 @@ class UserHelper {
       "email": user.email,
       "last_login": user.metadata.lastSignInTime,
       "created_at": user.metadata.creationTime,
-      "role": "user",
+      "imageUrl": user.photoURL,
+      "role": "User",
     };
 
     final userRef = db.collection('users').doc(user.uid);

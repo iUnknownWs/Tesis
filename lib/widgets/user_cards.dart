@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesis/pages/add_product.dart';
 import 'package:tesis/widgets/info_dialog.dart';
 
 class UserBuildShopCards extends StatefulWidget {
   final Products products;
-  const UserBuildShopCards({required this.products, Key? key}) : super(key: key);
+  const UserBuildShopCards({required this.products, Key? key})
+      : super(key: key);
 
   @override
   State<UserBuildShopCards> createState() => _UserBuildShopCardsState();
@@ -65,13 +65,12 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
 
   @override
   Widget build(BuildContext context) {
-    String data = widget.products.id;
-
     return Card(
       clipBehavior: Clip.antiAlias,
       child: SizedBox(
         width: 300,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CachedNetworkImage(
@@ -89,65 +88,43 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Text('Precio: ${widget.products.price}\$'),
+              child: RichText(
+                text: TextSpan(
+                    text: 'Precio: ',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    children: [
+                      TextSpan(
+                          text: widget.products.price.toString(),
+                          style:
+                              const TextStyle(fontWeight: FontWeight.normal)),
+                    ]),
+              ),
+              // child: Text('Precio: ${widget.products.price}\$'),
             ),
             Container(
               margin: const EdgeInsets.only(left: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Cantidad: '),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: QuantityMenu(
-                      quantityFuction: quantityFunction,
-                    ),
+                children: const [
+                  Text(
+                    'Cantidad: ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFFFFFFFF),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF6750A4),
-                      ),
-                    ),
-                    onPressed: () => showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: SizedBox(
-                          width: 240,
-                          height: 260,
-                          child: QrImage(
-                            data: data,
-                            backgroundColor: Colors.white,
-                          ),
-                        ),
-                        content: Text('ID del producto: $data'),
-                        actions: <Widget>[
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Cerrar')),
-                        ],
-                      ),
-                    ),
-                    child: const Text(
-                      'Mostrar QR',
-                    ),
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: QuantityMenu(
+                    quantityFuction: quantityFunction,
                   ),
                 ),
-                Padding(
+                const Spacer(),
+                Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
                   child: ElevatedButton(
                     style: ButtonStyle(

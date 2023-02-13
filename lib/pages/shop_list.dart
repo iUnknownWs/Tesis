@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:pay/pay.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesis/widgets/list_cards.dart';
 import 'package:tesis/widgets/shop_cards.dart';
+import 'package:http/http.dart' as http;
 
 class ShopListPage extends StatelessWidget {
   ShopListPage({super.key});
@@ -47,6 +50,21 @@ class ShopListPage extends StatelessWidget {
       dbUserDoc.collection('shoplist').get().then((querySnapshot) => {
             // ignore: avoid_function_literals_in_foreach_calls
             querySnapshot.docs.forEach((result) {
+              final docPro = FirebaseFirestore.instance
+                  .collection('products')
+                  .doc(result.id);
+              docPro.get().then((DocumentSnapshot doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                final int stockInt =
+                    data['stock'] - int.parse(result['quantity']);
+                final stock = <String, int>{"stock": stockInt};
+                docPro.set(stock, SetOptions(merge: true));
+              });
+            })
+          });
+      dbUserDoc.collection('shoplist').get().then((querySnapshot) => {
+            // ignore: avoid_function_literals_in_foreach_calls
+            querySnapshot.docs.forEach((result) {
               dbUserDoc
                   .collection('history')
                   .doc()
@@ -54,6 +72,9 @@ class ShopListPage extends StatelessWidget {
                   .then((value) => result.reference.delete());
             })
           });
+      // const String message = 'Testing';
+      // sendEmail(
+      //     toname: user.displayName!, toemail: user.email!, message: message);
     }
 
     return Scaffold(
@@ -168,4 +189,32 @@ class ShopListPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Future sendEmail({
+  required String toname,
+  required String toemail,
+  required String message,
+}) async {
+  const serviceId = 'service_iq9tb2n';
+  const templateId = 'template_gi33xd8';
+  const userId = '5nhNlo4H4FEu6rDx7';
+  final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+  final response = await http.post(url,
+      headers: {
+        'origin': 'http://localhost',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params': {
+          'to_name': toname,
+          'to_email': toemail,
+          'message': message,
+        }
+      }));
+
+  print(response.body);
 }

@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tesis/home.dart';
+import 'package:tesis/home_su.dart';
 import 'package:tesis/provider/google_sign_in.dart';
 import 'package:tesis/user/user_home.dart';
-
 import 'pages/login.dart';
 
 class Start extends StatelessWidget {
@@ -31,6 +31,9 @@ class Start extends StatelessWidget {
                 if (user != null &&
                     (user as Map<String, dynamic>)['role'] == 'Admin') {
                   return const Home();
+                } else if (user != null &&
+                    (user as Map<String, dynamic>)['role'] == 'AdminSU') {
+                  return const HomeSU();
                 } else {
                   return const UserHome();
                 }

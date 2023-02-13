@@ -38,6 +38,7 @@ class _BuildShopCardsState extends State<BuildShopCards> {
         id: docShopList.id,
         total: total,
         name: name,
+        uname: user.displayName!,
         price: price,
         imageUrl: imgUrl,
         quantity: quantity);
@@ -89,18 +90,33 @@ class _BuildShopCardsState extends State<BuildShopCards> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Text('Precio: ${widget.products.price}\$'),
+              child: RichText(
+                text: TextSpan(
+                    text: 'Precio: ',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    children: [
+                      TextSpan(
+                          text: widget.products.price.toString(),
+                          style:
+                              const TextStyle(fontWeight: FontWeight.normal)),
+                    ]),
+              ),
+              // child: Text('Precio: ${widget.products.price}\$'),
             ),
             Container(
               margin: const EdgeInsets.only(left: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Cantidad: '),
-                  Padding(
+                children: <Widget>[
+                  const Text(
+                    'Cantidad: ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Container(
                     padding: const EdgeInsets.only(left: 8),
                     child: QuantityMenu(
                       quantityFuction: quantityFunction,
+                      stock: widget.products.stock,
                     ),
                   ),
                 ],
@@ -132,7 +148,46 @@ class _BuildShopCardsState extends State<BuildShopCards> {
                             backgroundColor: Colors.white,
                           ),
                         ),
-                        content: Text('ID del producto: $data'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'ID del producto:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(data),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'Creado por: ',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(widget.products.uname),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                const Text(
+                                  'Fecha de Creación: ',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(widget.products.date),
+                              ],
+                            ),
+                          ],
+                        ),
                         actions: <Widget>[
                           TextButton(
                               onPressed: () {
@@ -143,7 +198,7 @@ class _BuildShopCardsState extends State<BuildShopCards> {
                       ),
                     ),
                     child: const Text(
-                      'Mostrar QR',
+                      'Mostrar Info',
                     ),
                   ),
                 ),
@@ -177,8 +232,22 @@ class _BuildShopCardsState extends State<BuildShopCards> {
                                 final docProducts = FirebaseFirestore.instance
                                     .collection('products')
                                     .doc(widget.products.id);
+                                final delProducts = FirebaseFirestore.instance
+                                    .collection('delProducts')
+                                    .doc(widget.products.id);
 
-                                docProducts.delete();
+                                final data = <String, String>{
+                                  "delBy": user.displayName!,
+                                  "id": user.uid,
+                                  "delDate": DateTime.now().toString()
+                                };
+                                docProducts.get().then(
+                                    (DocumentSnapshot result) => delProducts
+                                        .set(result.data()
+                                            as Map<String, dynamic>)
+                                        .then((value) => delProducts.set(
+                                            data, SetOptions(merge: true)))
+                                        .then((value) => docProducts.delete()));
                                 Navigator.pop(context);
                               },
                               child: const Text('Eliminar')),
@@ -249,7 +318,9 @@ class _BuildShopCardsState extends State<BuildShopCards> {
 
 class QuantityMenu extends StatefulWidget {
   final Function quantityFuction;
-  const QuantityMenu({super.key, required this.quantityFuction});
+  final int stock;
+  const QuantityMenu(
+      {super.key, required this.quantityFuction, required this.stock});
 
   @override
   State<QuantityMenu> createState() => _QuantityMenuState();
@@ -257,18 +328,13 @@ class QuantityMenu extends StatefulWidget {
 
 class _QuantityMenuState extends State<QuantityMenu> {
   String selected = '1';
-  List<String> intList = List<String>.generate(99, (index) => '${index + 1}');
   @override
   Widget build(BuildContext context) {
+    List<String> intList =
+        List<String>.generate(widget.stock, (index) => '${index + 1}');
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         enableFeedback: true,
-        dropdownColor: ElevationOverlay.applySurfaceTint(
-            Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surfaceTint,
-            2),
-        iconEnabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
-        style: Theme.of(context).textTheme.labelLarge,
         items: intList
             .map((val) => DropdownMenuItem(
                   value: val,
@@ -290,6 +356,7 @@ class _QuantityMenuState extends State<QuantityMenu> {
 class ShopList {
   final String id;
   final String name;
+  final String uname;
   final double price;
   final String imageUrl;
   final String quantity;
@@ -298,6 +365,7 @@ class ShopList {
   ShopList({
     required this.id,
     required this.name,
+    required this.uname,
     required this.price,
     required this.imageUrl,
     required this.quantity,
@@ -307,6 +375,7 @@ class ShopList {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
+        'uname': uname,
         'price': price,
         'imageUrl': imageUrl,
         'quantity': quantity,
@@ -318,6 +387,7 @@ class ShopList {
       total: json['total'],
       id: json['id'],
       name: json['name'],
+      uname: json['uname'],
       price: json['price'],
       imageUrl: json['imageUrl'],
       quantity: json['quantity'],

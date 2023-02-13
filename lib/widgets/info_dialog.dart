@@ -33,17 +33,40 @@ Future infoDialog(BuildContext context) => showDialog(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Foto:',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            Image.network(user.photoURL!),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          'ID del Usuario: ',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      ),
                       Text(
-                        'ID del Usuario: ${user.uid}',
+                        user.uid,
+                      ),
+                      Text(
+                        'Nombre: ',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       Text(
-                        'Nombre: ${user.displayName!}',
+                        user.displayName!,
+                      ),
+                      Text(
+                        'Email: ',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       Text(
-                        'Email: ${user.email!}',
-                        style: Theme.of(context).textTheme.labelLarge,
+                        user.email!,
                       ),
                       StreamBuilder<DocumentSnapshot>(
                           stream: FirebaseFirestore.instance
@@ -61,14 +84,9 @@ Future infoDialog(BuildContext context) => showDialog(
                               return const Text('Rol: Error');
                             }
                           }),
-                      Text(
-                        'Foto:',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
                     ],
                   ),
                 ),
-                Image.network(user.photoURL!),
                 Container(
                   alignment: Alignment.centerRight,
                   child: Padding(

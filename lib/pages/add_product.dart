@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:tesis/widgets/info_dialog.dart';
 
 class ProductDialog extends StatefulWidget {
   const ProductDialog({super.key});
@@ -18,6 +19,7 @@ class _ProductDialogState extends State<ProductDialog> {
   final controllerName = TextEditingController();
   final controllerPrice = TextEditingController();
   final controllerCategory = TextEditingController();
+  final controllerStock = TextEditingController();
   CategoryLabel? selectedCategory;
 
   Future selectFile() async {
@@ -32,7 +34,8 @@ class _ProductDialogState extends State<ProductDialog> {
   Future createProduct(
       {required String name,
       required String category,
-      required double price}) async {
+      required double price,
+      required int stock}) async {
     final path = 'files/${pickedFile!.name}';
     final file = File(pickedFile!.path!);
     final ref = FirebaseStorage.instance.ref().child(path);
@@ -52,8 +55,12 @@ class _ProductDialogState extends State<ProductDialog> {
 
     final products = Products(
       id: docProducts.id,
+      uid: user.uid,
+      date: DateTime.now().toString(),
       name: name,
+      uname: user.displayName!,
       price: price,
+      stock: stock,
       category: category,
       imageUrl: imageUrl,
     );
@@ -132,7 +139,12 @@ class _ProductDialogState extends State<ProductDialog> {
                   final name = controllerName.text;
                   final price = double.parse(controllerPrice.text);
                   final category = controllerCategory.text;
-                  createProduct(name: name, price: price, category: category)
+                  final stock = int.parse(controllerStock.text);
+                  createProduct(
+                          name: name,
+                          price: price,
+                          category: category,
+                          stock: stock)
                       .then((value) => Navigator.pop(context));
                 },
                 child: const Text("Añadir"))
@@ -177,11 +189,33 @@ class _ProductDialogState extends State<ProductDialog> {
                   keyboardType: TextInputType.number,
                   controller: controllerPrice,
                   decoration: const InputDecoration(
-                    hintText: 'Insterte el precio',
+                    hintText: 'Insterte el Precio',
                     suffixText: '\$',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(
                       Icons.attach_money,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Stock',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: controllerStock,
+                  decoration: const InputDecoration(
+                    hintText: 'Inserte el Stock Disponible',
+                    suffixText: '\$',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(
+                      Icons.inventory_2,
                     ),
                   ),
                 ),
@@ -241,23 +275,35 @@ class _ProductDialogState extends State<ProductDialog> {
 
 class Products {
   String id;
+  String uid;
+  String date;
   final String name;
+  final String uname;
   final double price;
+  final int stock;
   final String category;
   final String imageUrl;
 
   Products({
     this.id = '',
+    this.uid = '',
+    this.date = '',
     required this.name,
+    required this.uname,
     required this.price,
+    required this.stock,
     required this.category,
     required this.imageUrl,
   });
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'uid': uid,
+        'date': date,
         'name': name,
+        'uname': uname,
         'price': price,
+        'stock': stock,
         'category': category,
         'imageUrl': imageUrl,
       };
@@ -265,8 +311,12 @@ class Products {
   static Products fromJson(Map<String, dynamic> json) {
     return Products(
       id: json['id'],
+      uid: json['uid'],
+      date: json['date'],
       name: json['name'],
+      uname: json['uname'],
       price: json['price'],
+      stock: json['stock'],
       category: json['category'],
       imageUrl: json['imageUrl'],
     );

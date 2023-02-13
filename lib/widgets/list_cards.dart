@@ -35,8 +35,30 @@ class BuildListCards extends StatelessWidget {
                     shopList.name,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text('Precio: ${shopList.price}\$'),
-                  Text('Cantidad: ${shopList.quantity}')
+                  RichText(
+                    text: TextSpan(
+                        text: 'Precio: ',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                              text: shopList.price.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal)),
+                        ]),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                        text: 'Cantidad: ',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                              text: shopList.quantity,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal)),
+                        ]),
+                  ),
+                  // Text('Precio: ${shopList.price}\$'),
+                  // Text('Cantidad: ${shopList.quantity}')
                 ],
               ),
             ),
@@ -57,7 +79,7 @@ class BuildListCards extends StatelessWidget {
                   barrierDismissible: false,
                   builder: (BuildContext context) => AlertDialog(
                     title: Text(
-                      '¿Desea eliminar el producto ${shopList.name} de la base de datos?',
+                      '¿Desea eliminar el producto ${shopList.name} de su lista de compras?',
                       textAlign: TextAlign.center,
                     ),
                     actions: <Widget>[
