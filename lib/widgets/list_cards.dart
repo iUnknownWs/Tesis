@@ -41,7 +41,7 @@ class BuildListCards extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.bold),
                         children: [
                           TextSpan(
-                              text: shopList.price.toString(),
+                              text: '${shopList.price.toString()}\$',
                               style: const TextStyle(
                                   fontWeight: FontWeight.normal)),
                         ]),

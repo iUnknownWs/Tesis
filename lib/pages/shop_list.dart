@@ -117,7 +117,7 @@ class ShopListPage extends StatelessWidget {
                 return Column(
                   children: [
                     Text(
-                      'Monto total a Pagar: $sum\$',
+                      'Monto total a Pagar: ${sum.toStringAsFixed(2)}\$',
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     GooglePayButton(
@@ -158,7 +158,8 @@ class ShopListPage extends StatelessWidget {
                           content: SizedBox(
                               height: 18,
                               child: Center(
-                                  child: Text('Precio total a pagar: $sum\$'))),
+                                  child: Text(
+                                      'Precio total a pagar: ${sum.toStringAsFixed(2)} \$'))),
                           actions: <Widget>[
                             TextButton(
                                 onPressed: () {
@@ -216,5 +217,6 @@ Future sendEmail({
         }
       }));
 
+  // ignore: avoid_print
   print(response.body);
 }
