@@ -143,7 +143,7 @@ class _BuildShopCardsState extends State<BuildShopCards> {
                         title: SizedBox(
                           width: 240,
                           height: 260,
-                          child: QrImage(
+                          child: QrImageView(
                             data: data,
                             backgroundColor: Colors.white,
                           ),
@@ -198,7 +198,7 @@ class _BuildShopCardsState extends State<BuildShopCards> {
                       ),
                     ),
                     child: const Text(
-                      'Mostrar Info',
+                      'Info',
                     ),
                   ),
                 ),

@@ -103,9 +103,9 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
             ),
             Container(
               margin: const EdgeInsets.only(left: 8),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Cantidad: ',
                     style: TextStyle(fontWeight: FontWeight.bold),

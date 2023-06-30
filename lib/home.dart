@@ -68,10 +68,10 @@ class _HomeState extends State<Home> {
               });
             },
             itemBuilder: (context) => [
-              PopupMenuItem<Item>(
+              const PopupMenuItem<Item>(
                 value: Item.itemOne,
                 child: Row(
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(right: 12),
                       child: Icon(Icons.account_circle),
@@ -82,10 +82,10 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              PopupMenuItem<Item>(
+              const PopupMenuItem<Item>(
                 value: Item.itemTwo,
                 child: Row(
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(right: 12),
                       child: Icon(Icons.settings),
@@ -94,10 +94,10 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              PopupMenuItem<Item>(
+              const PopupMenuItem<Item>(
                 value: Item.itemThree,
                 child: Row(
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(right: 12),
                       child: Icon(Icons.logout_outlined),

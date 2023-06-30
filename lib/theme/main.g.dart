@@ -10,7 +10,6 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
@@ -31,10 +30,10 @@ class Home extends StatelessWidget {
           elevation: 2,
           title: const Text("Material Theme Builder"),
         ),
-        body: Center(
+        body: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
                 'Update with your UI',
               ),

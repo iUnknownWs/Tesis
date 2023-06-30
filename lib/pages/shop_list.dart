@@ -7,6 +7,7 @@ import 'package:pay/pay.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesis/widgets/list_cards.dart';
 import 'package:tesis/widgets/shop_cards.dart';
+import 'package:tesis/widgets/payment_config.dart';
 import 'package:http/http.dart' as http;
 
 class ShopListPage extends StatelessWidget {
@@ -121,7 +122,8 @@ class ShopListPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     GooglePayButton(
-                      paymentConfigurationAsset: 'gpay.json',
+                      paymentConfiguration:
+                          PaymentConfiguration.fromJsonString(defaultGooglePay),
                       paymentItems: paymentItems,
                       type: GooglePayButtonType.pay,
                       margin: const EdgeInsets.only(top: 15.0),
@@ -150,7 +152,7 @@ class ShopListPage extends StatelessWidget {
                           title: SizedBox(
                             width: 240,
                             height: 260,
-                            child: QrImage(
+                            child: QrImageView(
                               data: sum.toString(),
                               backgroundColor: Colors.white,
                             ),
