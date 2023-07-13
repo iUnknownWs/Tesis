@@ -33,9 +33,9 @@ class _BuildShopCardsState extends State<BuildShopCards> {
         .collection('users')
         .doc(user.uid)
         .collection('shoplist')
-        .doc(widget.products.id);
+        .doc();
     final shopList = ShopList(
-        id: docShopList.id,
+        id: id,
         total: total,
         name: name,
         uname: user.displayName!,
@@ -275,8 +275,7 @@ class _BuildShopCardsState extends State<BuildShopCards> {
                       barrierDismissible: false,
                       builder: (BuildContext context) => AlertDialog(
                         content: Text(
-                          '¿Desea añadir $quantity ${widget.products.name}(s) a la lista de compras? \n \n'
-                          'Atencion!: Si este producto ya se encuentra en el carrito añadirlo de nuevo reemplazará el anterior',
+                          '¿Desea añadir $quantity ${widget.products.name}(s) a la lista de compras?',
                           textAlign: TextAlign.center,
                         ),
                         actions: <Widget>[

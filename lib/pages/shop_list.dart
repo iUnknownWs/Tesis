@@ -68,7 +68,17 @@ class ShopListPage extends StatelessWidget {
             querySnapshot.docs.forEach((result) {
               dbUserDoc
                   .collection('history')
-                  .doc()
+                  .doc(result.id)
+                  .set(result.data())
+                  .then((value) => result.reference.delete());
+            })
+          });
+      dbUserDoc.collection('shoplist').get().then((querySnapshot) => {
+            // ignore: avoid_function_literals_in_foreach_calls
+            querySnapshot.docs.forEach((result) {
+              FirebaseFirestore.instance
+                  .collection('reports')
+                  .doc(result.id)
                   .set(result.data())
                   .then((value) => result.reference.delete());
             })

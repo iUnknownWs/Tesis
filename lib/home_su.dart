@@ -9,8 +9,9 @@ import 'package:tesis/widgets/info_dialog.dart';
 import 'package:tesis/pages/shop.dart';
 import 'package:tesis/pages/shop_list.dart';
 import 'package:tesis/widgets/dialog.dart';
+import 'package:tesis/pages/sell_reports.dart';
 
-enum Item { itemOne, itemTwo, itemThree, itemFour }
+enum Item { itemOne, itemTwo, itemThree, itemFour, itemFive }
 
 class HomeSU extends StatefulWidget {
   final QRViewController? controller;
@@ -67,6 +68,14 @@ class _HomeSUState extends State<HomeSU> {
                   provider.logout();
                 } else if (selectedMenu == Item.itemFour) {
                   accDialog(context);
+                } else if (selectedMenu == Item.itemFive) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const SellReports(),
+                      fullscreenDialog: true,
+                    ),
+                  );
                 }
               });
             },
@@ -95,6 +104,20 @@ class _HomeSUState extends State<HomeSU> {
                     ),
                     Text(
                       'Cuentas',
+                    ),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<Item>(
+                value: Item.itemFive,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Icon(Icons.sell),
+                    ),
+                    Text(
+                      'Ventas',
                     ),
                   ],
                 ),

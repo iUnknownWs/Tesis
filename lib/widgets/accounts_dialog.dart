@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final user = FirebaseAuth.instance.currentUser!;
-String role = 'User';
+String role = '';
 
 Stream<QuerySnapshot> readUsers() =>
     FirebaseFirestore.instance.collection('users').snapshots();
@@ -85,7 +85,7 @@ Future accDialog(BuildContext context) => showDialog(
                                     ElevatedButton(
                                         onPressed: () {
                                           final setRole = <String, String>{
-                                            "role": role,
+                                            'role': role,
                                           };
                                           FirebaseFirestore.instance
                                               .collection('users')
@@ -119,36 +119,33 @@ class RoleMenu extends StatefulWidget {
   State<RoleMenu> createState() => _RoleMenuState();
 }
 
+const List<String> list = <String>['User', 'Admin'];
+
 class _RoleMenuState extends State<RoleMenu> {
+  String role = list.first;
   @override
   Widget build(BuildContext context) {
-    String role = 'User';
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
-        enableFeedback: true,
+        value: role,
         dropdownColor: ElevationOverlay.applySurfaceTint(
             Theme.of(context).colorScheme.surface,
             Theme.of(context).colorScheme.surfaceTint,
             2),
         iconEnabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
         style: Theme.of(context).textTheme.labelLarge,
-        items: const [
-          DropdownMenuItem<String>(
-            value: 'User',
-            child: Text('Usuario'),
-          ),
-          DropdownMenuItem<String>(
-            value: 'Admin',
-            child: Text('Admin'),
-          ),
-        ],
-        value: role,
-        onChanged: (value) {
+        onChanged: (String? value) {
           setState(() {
             role = value!;
             widget.roleFunction(role);
           });
         },
+        items: list.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
     );
   }

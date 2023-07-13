@@ -33,11 +33,12 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
         .collection('users')
         .doc(user.uid)
         .collection('shoplist')
-        .doc(widget.products.id);
+        .doc();
     final shopList = ShopList(
         id: docShopList.id,
         total: total,
         name: name,
+        uname: user.displayName!,
         price: price,
         imageUrl: imgUrl,
         quantity: quantity);
@@ -121,6 +122,7 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
                   padding: const EdgeInsets.only(left: 16),
                   child: QuantityMenu(
                     quantityFuction: quantityFunction,
+                    stock: widget.products.stock,
                   ),
                 ),
                 const Spacer(),
@@ -140,8 +142,7 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
                       barrierDismissible: false,
                       builder: (BuildContext context) => AlertDialog(
                         content: Text(
-                          '¿Desea añadir $quantity ${widget.products.name}(s) a la lista de compras? \n \n'
-                          'Atencion!: Si este producto ya se encuentra en el carrito añadirlo de nuevo reemplazará el anterior',
+                          '¿Desea añadir $quantity ${widget.products.name}(s) a la lista de compras?',
                           textAlign: TextAlign.center,
                         ),
                         actions: <Widget>[
@@ -183,7 +184,9 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
 
 class QuantityMenu extends StatefulWidget {
   final Function quantityFuction;
-  const QuantityMenu({super.key, required this.quantityFuction});
+  final int stock;
+  const QuantityMenu(
+      {super.key, required this.quantityFuction, required this.stock});
 
   @override
   State<QuantityMenu> createState() => _QuantityMenuState();
@@ -191,18 +194,13 @@ class QuantityMenu extends StatefulWidget {
 
 class _QuantityMenuState extends State<QuantityMenu> {
   String selected = '1';
-  List<String> intList = List<String>.generate(99, (index) => '${index + 1}');
   @override
   Widget build(BuildContext context) {
+    List<String> intList =
+        List<String>.generate(widget.stock, (index) => '${index + 1}');
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         enableFeedback: true,
-        dropdownColor: ElevationOverlay.applySurfaceTint(
-            Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surfaceTint,
-            2),
-        iconEnabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
-        style: Theme.of(context).textTheme.labelLarge,
         items: intList
             .map((val) => DropdownMenuItem(
                   value: val,
@@ -224,6 +222,7 @@ class _QuantityMenuState extends State<QuantityMenu> {
 class ShopList {
   final String id;
   final String name;
+  final String uname;
   final double price;
   final String imageUrl;
   final String quantity;
@@ -232,6 +231,7 @@ class ShopList {
   ShopList({
     required this.id,
     required this.name,
+    required this.uname,
     required this.price,
     required this.imageUrl,
     required this.quantity,
@@ -241,6 +241,7 @@ class ShopList {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
+        'uname': uname,
         'price': price,
         'imageUrl': imageUrl,
         'quantity': quantity,
@@ -252,6 +253,7 @@ class ShopList {
       total: json['total'],
       id: json['id'],
       name: json['name'],
+      uname: json['uname'],
       price: json['price'],
       imageUrl: json['imageUrl'],
       quantity: json['quantity'],
