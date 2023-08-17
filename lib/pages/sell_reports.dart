@@ -38,7 +38,7 @@ class SellReports extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           ConstrainedBox(
-                            constraints: const BoxConstraints(maxHeight: 98),
+                            constraints: const BoxConstraints(maxHeight: 140),
                             child: CachedNetworkImage(
                               imageUrl: data['imageUrl'],
                               placeholder: (context, url) => const Center(
@@ -58,53 +58,41 @@ class SellReports extends StatelessWidget {
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                      text: 'Comprador: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      children: [
-                                        TextSpan(
-                                            text: data['uname'],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal)),
-                                      ]),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Comprador: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(data['uname'])
+                                  ],
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                      text: 'Precio: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      children: [
-                                        TextSpan(
-                                            text: data['price'].toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal)),
-                                      ]),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Precio: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(data['price'].toString())
+                                  ],
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                      text: 'Cantidad: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      children: [
-                                        TextSpan(
-                                            text: data['quantity'],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal)),
-                                      ]),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Cantidad: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(data['quantity'])
+                                  ],
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                      text: 'Total: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      children: [
-                                        TextSpan(
-                                            text: data['total'].toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal)),
-                                      ]),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Total: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(data['total'].toString())
+                                  ],
                                 ),
                                 // Text('Precio: ${shopList.price}\$'),
                                 // Text('Cantidad: ${shopList.quantity}')

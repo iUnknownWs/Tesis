@@ -33,9 +33,9 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
         .collection('users')
         .doc(user.uid)
         .collection('shoplist')
-        .doc();
+        .doc(widget.products.id);
     final shopList = ShopList(
-        id: docShopList.id,
+        id: id,
         total: total,
         name: name,
         uname: user.displayName!,
@@ -89,18 +89,8 @@ class _UserBuildShopCardsState extends State<UserBuildShopCards> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: RichText(
-                text: TextSpan(
-                    text: 'Precio: ',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    children: [
-                      TextSpan(
-                          text: widget.products.price.toString(),
-                          style:
-                              const TextStyle(fontWeight: FontWeight.normal)),
-                    ]),
-              ),
-              // child: Text('Precio: ${widget.products.price}\$'),
+              child: Text('Precio: ${widget.products.price}',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
             Container(
               margin: const EdgeInsets.only(left: 8),

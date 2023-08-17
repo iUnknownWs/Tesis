@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,6 +32,41 @@ class ShopListPage extends StatelessWidget {
       status: PaymentItemStatus.final_price,
     )
   ];
+  Future postData() async {
+    final orders = <Map>[];
+    double sum = 0;
+    final dbUserDoc =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final shoplistResult = await dbUserDoc.collection('shoplist').get();
+    for (var result in shoplistResult.docs) {
+      sum += result['total'];
+      orders.add({
+        'name': result['name'],
+        'quantity': result['quantity'],
+        'price': result['price']
+      });
+    }
+    final body = json.encode({
+      "id": user.uid,
+      "created_at": DateTime.now().toString(),
+      "user": {
+        "full_name": user.displayName,
+        "email": user.email,
+      },
+      "payment_method": "Google Pay",
+      "total_order": sum,
+      "aditional": '',
+      'address': '',
+      'product_orders': orders
+    });
+    final response =
+        await http.post(Uri.parse('http://apiwill.mlsparts.shop/generate_pdf'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: body);
+    print(response.body);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +79,11 @@ class ShopListPage extends StatelessWidget {
     void onGooglePayResult(paymentResult) {
       final dbUserDoc =
           FirebaseFirestore.instance.collection('users').doc(user.uid);
-      debugPrint(paymentResult.toString());
       const SnackBar snackBar = SnackBar(
         content: Text('El pago se ha realizado con exito'),
         behavior: SnackBarBehavior.floating,
       );
+      postData();
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       dbUserDoc.collection('shoplist').get().then((querySnapshot) => {
             // ignore: avoid_function_literals_in_foreach_calls
@@ -83,9 +120,6 @@ class ShopListPage extends StatelessWidget {
                   .then((value) => result.reference.delete());
             })
           });
-      // const String message = 'Testing';
-      // sendEmail(
-      //     toname: user.displayName!, toemail: user.email!, message: message);
     }
 
     return Scaffold(
@@ -138,7 +172,6 @@ class ShopListPage extends StatelessWidget {
                       type: GooglePayButtonType.pay,
                       margin: const EdgeInsets.only(top: 15.0),
                       onPaymentResult: onGooglePayResult,
-                      // ignore: avoid_print
                       onError: (error) => print(error),
                       loadingIndicator: const Center(
                         child: CircularProgressIndicator(),
@@ -229,6 +262,5 @@ Future sendEmail({
         }
       }));
 
-  // ignore: avoid_print
   print(response.body);
 }

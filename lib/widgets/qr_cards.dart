@@ -37,8 +37,8 @@ class _BuildQRCardsState extends State<BuildQRCards> {
         .collection('shoplist')
         .doc(widget.products.id);
     final shopList = ShopList(
-        total: total,
         id: docShopList.id,
+        total: total,
         name: name,
         uname: user.displayName!,
         price: price,
@@ -62,8 +62,8 @@ class _BuildQRCardsState extends State<BuildQRCards> {
       child: SizedBox(
         width: 300,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CachedNetworkImage(
               imageUrl: widget.products.imageUrl,
@@ -80,103 +80,105 @@ class _BuildQRCardsState extends State<BuildQRCards> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: RichText(
-                text: TextSpan(
-                    text: 'Precio: ',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    children: [
-                      TextSpan(
-                          text: widget.products.price.toString(),
-                          style:
-                              const TextStyle(fontWeight: FontWeight.normal)),
-                    ]),
-              ),
-              // child: Text('Precio: ${widget.products.price}\$'),
+              child: Text('Precio: ${widget.products.price}',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
             Container(
               margin: const EdgeInsets.only(left: 8),
-              child: Column(
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Cantidad: ',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  QuantityMenu(quantityFuction: quantityFunction),
                 ],
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFFFFFFFF),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF6750A4),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      widget.controller!.resumeCamera();
-                    },
-                    child: const Text(
-                      'Cancelar',
-                    ),
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: QuantityMenu(
+                    quantityFuction: quantityFunction,
+                    stock: widget.products.stock,
                   ),
                 ),
-                Padding(
+                const Spacer(),
+                Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFFFFFFFF),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF6750A4),
-                      ),
-                    ),
-                    onPressed: () => showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) => AlertDialog(
-                        content: Text(
-                          '¿Desea añadir el producto ${widget.products.name} a la lista de compras?',
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Cancelar')),
-                          TextButton(
-                            onPressed: () {
-                              double total = (widget.products.price *
-                                  double.parse(quantity));
-                              addToList(
-                                  id: widget.products.id,
-                                  total: total,
-                                  name: widget.products.name,
-                                  price: widget.products.price,
-                                  imgUrl: widget.products.imageUrl,
-                                  quantity: quantity);
-                              widget.callback(2);
-                              widget.controller!.resumeCamera();
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Añadir'),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFFFFFFFF),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF6750A4),
+                            ),
                           ),
-                        ],
+                          onPressed: () {
+                            Navigator.pop(context);
+                            widget.controller!.resumeCamera();
+                          },
+                          child: const Text(
+                            'Salir',
+                          ),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      'Añadir al Carro',
-                    ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xFFFFFFFF),
+                          ),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xFF6750A4),
+                          ),
+                        ),
+                        onPressed: () => showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) => AlertDialog(
+                            content: Text(
+                              '¿Desea añadir $quantity ${widget.products.name}(s) a la lista de compras?',
+                              textAlign: TextAlign.center,
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancelar')),
+                              TextButton(
+                                  onPressed: () {
+                                    double total = widget.products.price *
+                                        double.parse(quantity);
+                                    addToList(
+                                        id: widget.products.id,
+                                        total: total,
+                                        name: widget.products.name,
+                                        price: widget.products.price,
+                                        imgUrl: widget.products.imageUrl,
+                                        quantity: quantity);
+                                    widget.callback(2);
+                                    widget.controller!.resumeCamera();
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Añadir')),
+                            ],
+                          ),
+                        ),
+                        child: const Text(
+                          'Añadir',
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -190,7 +192,9 @@ class _BuildQRCardsState extends State<BuildQRCards> {
 
 class QuantityMenu extends StatefulWidget {
   final Function quantityFuction;
-  const QuantityMenu({super.key, required this.quantityFuction});
+  final int stock;
+  const QuantityMenu(
+      {super.key, required this.quantityFuction, required this.stock});
 
   @override
   State<QuantityMenu> createState() => _QuantityMenuState();
@@ -198,17 +202,13 @@ class QuantityMenu extends StatefulWidget {
 
 class _QuantityMenuState extends State<QuantityMenu> {
   String selected = '1';
-  List<String> intList = List<String>.generate(99, (index) => '${index + 1}');
   @override
   Widget build(BuildContext context) {
+    List<String> intList =
+        List<String>.generate(widget.stock, (index) => '${index + 1}');
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
-        dropdownColor: ElevationOverlay.applySurfaceTint(
-            Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surfaceTint,
-            2),
-        iconEnabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
-        style: Theme.of(context).textTheme.labelLarge,
+        enableFeedback: true,
         items: intList
             .map((val) => DropdownMenuItem(
                   value: val,

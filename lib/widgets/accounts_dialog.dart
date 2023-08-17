@@ -48,29 +48,23 @@ Future accDialog(BuildContext context) => showDialog(
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                      text: 'Correo: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      children: [
-                                        TextSpan(
-                                            text: data['email'],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal)),
-                                      ]),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Correo: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(data['email'])
+                                  ],
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                      text: 'Rol: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                      children: [
-                                        TextSpan(
-                                            text: data['role'],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal)),
-                                      ]),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Rol: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(data['role'])
+                                  ],
                                 ),
                                 Row(
                                   mainAxisSize: MainAxisSize.min,

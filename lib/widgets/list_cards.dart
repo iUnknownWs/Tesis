@@ -35,30 +35,10 @@ class BuildListCards extends StatelessWidget {
                     shopList.name,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  RichText(
-                    text: TextSpan(
-                        text: 'Precio: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        children: [
-                          TextSpan(
-                              text: '${shopList.price.toString()}\$',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal)),
-                        ]),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                        text: 'Cantidad: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        children: [
-                          TextSpan(
-                              text: shopList.quantity,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal)),
-                        ]),
-                  ),
-                  // Text('Precio: ${shopList.price}\$'),
-                  // Text('Cantidad: ${shopList.quantity}')
+                  Text('Precio: ${shopList.price}\$',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Cantidad: ${shopList.quantity}',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
